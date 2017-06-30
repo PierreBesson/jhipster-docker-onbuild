@@ -2,14 +2,24 @@
 
 ## Usage
 
-1) Add either [Dockerfile-one-stage](Dockerfile-one-stage) or [Dockerfile-multi-stage](Dockerfile-multi-stage) (if your docker daemon support [multistage builds](https://docs.docker.com/engine/userguide/eng-image/multistage-build/)) as `Dockerfile` at the root of your JHipster project
+1) Add one of those magic `Dockerfile` at the root of your JHipster project:
+
+### **One stage build** (produce a large docker image >1.8GB)**
+```
+FROM pbesson/jhipster:onbuild
+```
+### **Multi stage build** (produce a small docker image ~140MB) and require that your docker daemon support [multistage builds](https://docs.docker.com/engine/userguide/eng-image/multistage-build/)
+```
+FROM pbesson/jhipster:onbuild
+FROM pbesson/jhipster:onrun
+```
 
 2) Run:
 ```
 docker build -t your-docker-image-name .
 ```
 
-## Building
+## (Optional) Building the onbuild images
 
 1) Build the jhipster-onbuild docker image:
 ```
@@ -19,7 +29,3 @@ docker build -t pbesson/jhipster:onbuild -f Dockerfile-onbuild .
 ```
 docker build -t pbesson/jhipster:onrun -f Dockerfile-onrun .
 ```
-
-Notes:
-docker image 1 stage: 1.82GB
-docker image multi-stage: 139MB
