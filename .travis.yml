@@ -1,0 +1,14 @@
+sudo: required
+language: java
+services:
+  - docker
+
+script:
+  - docker build -t pbesson/jhipster:onbuild -f Dockerfile-onbuild .
+  - docker build -t pbesson/jhipster:onrun -f Dockerfile-onrun .
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+      docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+      docker push  pbesson/jhipster:onbuild;
+      docker push  pbesson/jhipster:onrun;
+    fi
